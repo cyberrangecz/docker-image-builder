@@ -1,0 +1,63 @@
+image: docker:19
+
+variables:
+  CI_REGISTRY_IMAGE: registry.gitlab.ics.muni.cz:443/muni-kypo-images/docker-image-builder/packer
+  DOCKER_TLS_CERTDIR: "/certs"
+
+#services:
+#  - docker:19-dind
+
+default:
+  before_script:
+    - echo -n $CI_JOB_TOKEN | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  tags:
+    - image-builder
+
+build:
+  stage: build
+  script:
+    - docker build --pull --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+test:
+  stage: test
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  timeout: 3h
+  before_script:
+    - packer --version
+    - VBoxManage --version
+    - qemu-system-x86_64 --version
+    - vagrant --version
+    - ansible --version
+    - openstack --version
+  script:
+    - cd test
+    - packer build -only=vbox debian.json
+    - packer build -only=qemu debian.json
+    - vagrant box add --name mybox target-vbox/*
+    - vagrant up
+  needs: ["build"]
+
+push-latest:
+  variables:
+    GIT_STRATEGY: none
+  stage: deploy
+  only:
+    - master
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
+  needs: ["test"]
+
+push-tag:
+  variables:
+    GIT_STRATEGY: none
+  stage: deploy
+  only:
+    - tags
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  needs: ["test"]
