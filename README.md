@@ -1,6 +1,6 @@
 # Docker Image Builder
 
-This repository contains definition of a Docker image with QEMU, VBox, Packer, Vagrant, OpenStack-cli and Ansible.
+This repository contains definition of a Docker image with QEMU, VBox, Packer, Vagrant, OpenStack-cli and Ansible, which is used in [ci-cd-virtual-images](https://gitlab.ics.muni.cz/muni-kypo-images/ci-cd-virtual-images).
 
 The Docker image is also available on [Docker Hub](https://hub.docker.com/repository/docker/munikypo/packer-vbox-qemu).
 
