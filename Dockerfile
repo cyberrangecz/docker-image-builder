@@ -55,6 +55,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-openstackclient
 # Ansible
 #RUN apt-add-repository --yes --update ppa:ansible/ansible
 #RUN apt-get install -y ansible
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip && pip3 install ansible
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip && pip3 install ansible winrm
 
 RUN apt-get -y clean
