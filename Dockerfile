@@ -50,7 +50,7 @@ RUN VAGRANT_VERSION=`wget -O- https://releases.hashicorp.com/vagrant/ 2> /dev/nu
     rm vagrant.zip
 
 # Openstack-cli
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-openstackclient
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-openstackclient s3cmd
 
 # Ansible
 #RUN apt-add-repository --yes --update ppa:ansible/ansible
