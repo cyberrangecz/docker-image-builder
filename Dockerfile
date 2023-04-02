@@ -13,7 +13,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y tzdata -
     software-properties-common \
     xvfb \
     git \
-    libarchive-tools
+    libarchive-toolslibarchive-tools \
+    rsync
 
 # QEMU
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends qemu-kvm ebtables libguestfs-tools
