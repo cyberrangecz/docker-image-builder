@@ -13,7 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y tzdata -
     software-properties-common \
     xvfb \
     git \
-    libarchive-toolslibarchive-tools \
+    libarchive-tools \
     rsync
 
 # QEMU
