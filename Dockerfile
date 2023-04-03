@@ -29,10 +29,10 @@ RUN VIRTUALBOX_VERSION=`VBoxManage --version | sed -r -e '/[0-9]+\.[0-9]+\.[0-9]
     VBoxManage setproperty vrdeextpack "Oracle VM VirtualBox Extension Pack"
 
 # Packer
-RUN PACKER_VERSION=`wget -O- https://releases.hashicorp.com/packer/ 2> /dev/null \
-      | fgrep '/packer' \
-      | head -1 \
-      | sed -r 's/.*packer_([0-9.]+).*/\1/'` && \
+RUN PACKER_VERSION=$(wget -O- https://releases.hashicorp.com/packer/ 2> /dev/null \
+      | sed -r -e 's/.*packer_([0-9]+\.[0-9]+\.[0-9]+)<\/a>.*/\1/' -e '/^[0-9]+\.[0-9]+\.[0-9]+$/!d' \
+      | sort --version-sort --reverse \
+      | head -n 1) && \
     wget -q -O packer.zip https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip && \
     unzip packer.zip && \
     chmod +x packer && \
@@ -40,10 +40,10 @@ RUN PACKER_VERSION=`wget -O- https://releases.hashicorp.com/packer/ 2> /dev/null
     rm packer.zip
 
 # Vagrant
-RUN VAGRANT_VERSION=`wget -O- https://releases.hashicorp.com/vagrant/ 2> /dev/null \
-      | fgrep '/vagrant' \
-      | head -1 \
-      | sed -r 's/.*vagrant_([0-9.]+).*/\1/'` && \
+RUN VAGRANT_VERSION=$(wget -O- https://releases.hashicorp.com/vagrant/ 2> /dev/null \
+      | sed -r -e 's/.*vagrant_([0-9]+\.[0-9]+\.[0-9]+)<\/a>.*/\1/' -e '/^[0-9]+\.[0-9]+\.[0-9]+$/!d' \
+      | sort --version-sort --reverse \
+      | head -n 1) && \
     wget -q -O vagrant.zip https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_linux_amd64.zip && \
     unzip vagrant.zip && \
     chmod +x vagrant && \
