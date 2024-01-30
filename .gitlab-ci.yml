@@ -32,8 +32,9 @@ test:
     - openstack --version
   script:
     - cd test
-    - packer build -only=vbox debian.json
-    - packer build -only=qemu debian.json
+    - packer init debian.pkr.hcl
+    - packer build -only=virtualbox-iso.vbox debian.pkr.hcl
+    - packer build -only=qemu.qemu debian.pkr.hcl
     - vagrant box add --name mybox target-vbox/*
     - vagrant up
   needs: ["build"]
