@@ -58,4 +58,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-openstackclient s3
 #RUN apt-get install -y ansible
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip && pip3 install ansible pywinrm
 
+# GitLab-Tofu
+RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh && \
+    chmod +x install-opentofu.sh && \
+    ./install-opentofu.sh --install-method standalone && \
+    rm ./install-opentofu.sh && \
+    curl --proto '=https' --tlsv1.2 -fsSL https://gitlab.com/components/opentofu/-/raw/main/src/gitlab-tofu.sh -o /usr/bin/gitlab-tofu && \
+    chmod 755 /usr/bin/gitlab-tofu
+
 RUN apt-get -y clean

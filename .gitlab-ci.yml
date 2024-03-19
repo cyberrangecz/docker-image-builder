@@ -30,6 +30,7 @@ test:
     - vagrant --version
     - ansible --version
     - openstack --version
+    - gitlab-tofu --version
   script:
     - cd test
     - packer init debian.pkr.hcl
