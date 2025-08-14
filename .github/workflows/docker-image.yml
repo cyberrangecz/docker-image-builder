@@ -1,0 +1,29 @@
+name: Docker Image CI
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: gha-runner-scale-set
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Configure Docker Authentication
+      run: |
+        mkdir -p /kaniko/.docker
+        echo '{"auths":{"ghcr.io":{"auth":"'"$(echo -n $GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }} | base64)"'"}}}' > /kaniko/.docker/config.json
+
+    - name: Build and Push Docker Image
+      env:
+        IMAGE_NAME: docker-image-builder
+        GIT_USERNAME: "kaniko-bot"
+        GIT_PASSWORD: "${{ secrets.GITHUB_TOKEN }}"
+      run: |
+        /kaniko/executor \
+          --context="${{ github.repositoryUrl }}#${{ github.ref }}#${{ github.sha }}" \
+          --dockerfile ./Dockerfile \
+          --destination=ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:${{ github.sha }} \
+          $(if [ "${GITHUB_REF_NAME}" = "master" ]; then echo "--destination ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}:latest"; fi)
