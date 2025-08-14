@@ -1,8 +1,6 @@
 # Docker Image Builder
 
-This repository contains definition of a Docker image with QEMU, VBox, Packer, Vagrant, OpenStack-cli and Ansible, which is used in [ci-cd-virtual-images](https://gitlab.ics.muni.cz/muni-kypo-images/ci-cd-virtual-images).
-
-The Docker image is also available on [Docker Hub](https://hub.docker.com/repository/docker/munikypo/packer-vbox-qemu).
+This repository contains definition of a Docker image with QEMU, Packer, Ansible and OpenTofu.
 
 ## Example usage
 ```bash
@@ -14,5 +12,4 @@ sudo docker run --rm -it --privileged --network=host -w /opt -v `pwd`:/opt packe
 ```
 
 ## License
-
 This project is licensed under the [MIT License](LICENSE).
