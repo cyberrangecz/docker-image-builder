@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: gha-runner-scale-set
+    runs-on: ["self-hosted", "images"]
     container:
       image: gcr.io/kaniko-project/executor:debug
     permissions:
