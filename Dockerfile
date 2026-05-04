@@ -19,9 +19,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends qe
 
 # Packer
 RUN PACKER_VERSION=$(wget -O- https://releases.hashicorp.com/packer/ 2> /dev/null \
-    | sed -r -e 's/.*packer_([0-9]+\.[0-9]+\.[0-9]+)<\/a>.*/\1/' -e '/^[0-9]+\.[0-9]+\.[0-9]+$/!d' \
-    | sort --version-sort --reverse \
-    | head -n 1) && \
+      | sed -r -e 's/.*packer_([0-9]+\.[0-9]+\.[0-9]+)<\/a>.*/\1/' -e '/^[0-9]+\.[0-9]+\.[0-9]+$/!d' \
+      | sort --version-sort --reverse \
+      | head -n 1) && \
     wget -q -O packer.zip https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip && \
     unzip packer.zip && \
     chmod +x packer && \
