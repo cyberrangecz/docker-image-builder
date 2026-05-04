@@ -40,4 +40,12 @@ RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opent
     ./install-opentofu.sh --install-method standalone && \
     rm ./install-opentofu.sh
 
+# UEFI disk tools and TPM support for building new Windows images
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ovmf \
+    swtpm \
+    swtpm-tools \
+    gdisk \
+    parted
+
 RUN apt-get -y clean
