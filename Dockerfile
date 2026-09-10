@@ -15,7 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
     rsync
 
 # QEMU
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends qemu-kvm ebtables libguestfs-tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends qemu-system ebtables libguestfs-tools
 
 # Packer
 RUN PACKER_VERSION=$(wget -O- https://releases.hashicorp.com/packer/ 2> /dev/null \
