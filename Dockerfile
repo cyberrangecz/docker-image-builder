@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu
 
 # Prerequisities
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
@@ -47,5 +47,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     swtpm-tools \
     gdisk \
     parted
+
+# Vault
+RUN VAULT_VERSION=$(curl -s https://releases.hashicorp.com/vault/index.json | jq -r '.versions | keys[] | select(. | test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' | sort -V | tail -1) \
+    && curl -sSL https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip \
+    && unzip vault.zip -d /usr/local/bin/ \
+    && rm vault.zip \
+    && chmod +x /usr/local/bin/vault
 
 RUN apt-get -y clean
